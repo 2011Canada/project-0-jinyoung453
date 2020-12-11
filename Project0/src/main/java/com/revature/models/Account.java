@@ -1,18 +1,20 @@
 package com.revature.models;
 
-public class Account implements Displayable{
+public class Account{
 	public static int numOfAccount =  0;
 	private int id=0;
+	private char[] password;
 	private String fName, lName;
 	private char type;
 	
-	Account(int inId){
+	Account(int inId, char[] password){
 		this.id = inId;
+		this.password = password;
 		numOfAccount++;
 	}
 	
-	public Account(int inId, String inFName, String inLName, char type) {
-		this(inId);
+	public Account(int inId, char[] password, String inFName, String inLName, char type) {
+		this(inId, password);
 		this.fName = inFName;
 		this.lName = inLName;
 		this.type = type;
@@ -58,5 +60,15 @@ public class Account implements Displayable{
 	public void setType(char type) {
 		this.type = type;
 	}
+
+	public char[] getPassword() {
+		return password;
+	}
+
+	public void setPassword(char[] password) {
+		this.password = password;
+	}
+	
+	
 
 }

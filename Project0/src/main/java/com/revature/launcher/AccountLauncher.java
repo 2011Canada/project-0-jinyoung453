@@ -19,7 +19,7 @@ public class AccountLauncher {
 		AccountService aService = new AccountServiceImplementation(aDao);
 		AccountMenu atm = new AccountMenu(aService);
 		
-		e720Logger.info("Server has Started");
+		e720Logger.info("SERVER HAS STARTED");
 		
 		atm.firstDisplay();
 		while(true) {

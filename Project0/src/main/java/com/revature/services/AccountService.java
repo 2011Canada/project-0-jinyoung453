@@ -6,15 +6,17 @@ import com.revature.models.Account;
 import com.revature.models.Customer;
 
 public interface AccountService {
-
 	
 	// probably should make 'createAccount'
 	public Account create(Account ac);
 	
 	//login
-	public Account login(int id, char type);
+	public Account login(int id,char type);
 	
-	//view balance
+	//findAccount
+	public Account findCustomer(int id, char type);
+	
+	public char chkStatus(int id);
 	
 	//withdrawal
 	public void withdrawal(Customer cs, double amt);
@@ -23,5 +25,7 @@ public interface AccountService {
 	public void deposit(Customer cs, double amt);
 	
 	//showAllCustomerList
-	public List<Customer> showAllCustomer();
+	public List<Customer> showAllCustomers();
+	
+	public List<Customer> showInactiveCustomers();
 }

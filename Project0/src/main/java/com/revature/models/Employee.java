@@ -2,11 +2,16 @@ package com.revature.models;
 
 public class Employee extends Account{
 
-	Employee(int inId) {
-		super(inId);
+	Employee(int inId, char[] password) {
+		super(inId, password);
 	}
 
-	public Employee(int inId, String inFName, String inLName) {
-		super (inId, inFName, inLName, 'E');
+	public Employee(int inId, char[] password, String inFName, String inLName) {
+		super (inId, password, inFName, inLName, 'E');
+	}
+	
+	@Override
+	public void display() {
+		System.out.println("EMPLOYEE [ ID: " + super.getId() + ", First Name: " + super.getfName() + ", Last Name: " + super.getlName() +" ]"  ); 		
 	}
 }
