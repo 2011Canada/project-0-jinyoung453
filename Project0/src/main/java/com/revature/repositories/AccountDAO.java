@@ -12,7 +12,7 @@ public interface AccountDAO {
 	public Account updateAccount(Customer ac, double amount);
 	public List<Account> showAllAccount();
 	public List<Customer> showAllCustomers();
-	public List<Customer> showInactiveCustomers();
+	public List<Customer> showAllInactiveCustomers();
 	//public Account findAccountById(int id, String pw, char type) throws AccountNotFoundException;
 	//public Account findAccountById(int id, char type) throws AccountNotFoundException;
 	//public Account findAccountById(int id, String pw, char type) ;

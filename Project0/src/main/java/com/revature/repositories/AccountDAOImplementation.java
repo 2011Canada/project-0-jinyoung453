@@ -12,14 +12,14 @@ import com.revature.models.Employee;
 public class AccountDAOImplementation implements AccountDAO {
 
 	static List<Account> accList = new ArrayList<Account>();
-	static List<Customer> cstList = new ArrayList<Customer>();
-	static List<Employee> empList = new ArrayList<Employee>();
-	static List<Customer> inactCstList = new ArrayList<Customer>();
+	List<Customer> cstList;
+	//static List<Employee> empList = new ArrayList<Employee>();
+	List<Customer> inactCstList;
 	
 	static {
 		Account jain = new Customer(1, new char[]{'1'} ,"Jain", "Kim", 1000.00, 'I');
-		Account ryan = new Customer(2,new char[]{'2'} ,"Ryan", "Hong", 2000.00, 'A');
-		Account sue = new Customer(3,new char[]{'3'} ,"Sue", "Shin", 3000.00, 'A');
+		Account ryan = new Customer(2,new char[]{'2'} ,"Ryan", "Hong", 2000.00, 'I');
+		Account sue = new Customer(3,new char[]{'3'} ,"Sue", "Shin", 3000.00, 'I');
 		Account emp1 = new Employee(1,new char[]{'1'} ,"EMP", "AAA");
 		Account emp2 = new Employee(2, new char[]{'2'},"EMP2", "BBB");
 		Account emp3 = new Employee(3,new char[]{'3'} ,"EMP3", "CCC");
@@ -56,6 +56,7 @@ public class AccountDAOImplementation implements AccountDAO {
 	}
 	
 	public List<Customer> showAllCustomers() {
+		cstList = new ArrayList<Customer>();
 		for(Account ac:accList) {
 			if(ac instanceof Customer) {
 				cstList.add((Customer)ac);
@@ -64,8 +65,9 @@ public class AccountDAOImplementation implements AccountDAO {
 		return cstList;
 	}
 	
-	public List<Customer> showInactiveCustomers() {
-		inactCstList = showAllCustomers();
+	public List<Customer> showAllInactiveCustomers() {
+		inactCstList = new ArrayList<Customer>();
+		cstList = showAllCustomers();
 		for(Customer cst : cstList) {
 			if(cst.getStatus() == 'I') {
 				inactCstList.add(cst);

@@ -17,15 +17,15 @@ public class AccountLauncher {
 	public static void main(String[] args) {
 		AccountDAO aDao = new AccountDAOImplementation();
 		AccountService aService = new AccountServiceImplementation(aDao);
-		AccountMenu atm = new AccountMenu(aService);
+		AccountMenu aMenu = new AccountMenu(aService);
 		
 		e720Logger.info("SERVER HAS STARTED");
 		
-		atm.firstDisplay();
+		aMenu.firstDisplay();
 		while(true) {
 
-			atm.display();
-			atm.manageUserInput();
+			aMenu.display();
+			aMenu.manageUserInput();
 		}
 		
 		

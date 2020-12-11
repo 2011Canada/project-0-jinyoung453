@@ -48,8 +48,8 @@ public class AccountServiceImplementation implements AccountService{
 	}
 	
 	public List<Customer> showInactiveCustomers() {
-
-		return ad.showInactiveCustomers();
+		//System.out.println("ee");
+		return ad.showAllInactiveCustomers();
 	}
 
 }
