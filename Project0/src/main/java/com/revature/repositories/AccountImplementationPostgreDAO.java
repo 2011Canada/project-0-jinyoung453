@@ -6,8 +6,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.postgresql.jdbc.PgArray;
+
+import com.revature.launcher.AccountLauncher;
 import com.revature.models.Account;
 import com.revature.models.Customer;
 import com.revature.util.ConnectionBank;
@@ -56,6 +61,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		}catch (SQLException e) {
 			e.printStackTrace();
 			try {
+				System.out.println("Roll Back");
 				conn.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -63,6 +69,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 		} finally {
 			try {
+				System.out.println("Commit");
 				conn.commit();
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {
@@ -77,34 +84,172 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 
 	public Account updateAccount(Customer ac, double amount) {
 		Connection conn = cb.getConnection();
-		
+		try {
+			conn.setAutoCommit(false);
+			
+			String sql = "update customer " +
+						 "set balance = ? " + 
+						 "where main_id = ? ;";
+			PreparedStatement updateAcc = conn.prepareStatement(sql);
+			
+			updateAcc.setDouble(1, amount);
+			updateAcc.setInt(2, ac.getId());
+			
+			updateAcc.executeUpdate();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				System.out.println("Roll Back");
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				System.out.println("Commit");
+				conn.commit();
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			cb.releaseConnection(conn);
+		}
 		
 		return ac;
 	}
 
 	public List<Account> showAllAccount() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = this.cb.getConnection();
+		List<Account> all = new ArrayList<Account>();
+
+		try {
+			String sql = "select * from account;";
+			Statement s = conn.createStatement();
+
+			ResultSet res = s.executeQuery(sql);
+			while (res.next()) {
+
+				Account ac = new Account(res.getInt("main_id"), res.getString("pw").toCharArray());
+				ac.setfName(res.getString("fName"));
+				ac.setlName(res.getString("lName"));
+				ac.setType(res.getString("accType").charAt(0));
+				all.add(ac);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		AccountLauncher.e720Logger.info(all);
+		return all;
 	}
 
 	public List<Customer> showAllCustomers() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = this.cb.getConnection();
+		List<Customer> allCust = new ArrayList<Customer>();
+
+		try {
+			String sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status "
+					+ "from account a "
+					+ "join customer c "
+					+ "on a.main_id = c.main_id "
+					+ "where a.acctype = 'C'; ";
+			Statement s = conn.createStatement();
+
+			ResultSet res = s.executeQuery(sql);
+			while (res.next()) {
+				//(int inId, char[] password ,String inFName, String inLName, double inBalance, char status)
+				Customer cst = new Customer(res.getInt("main_id"), res.getString("pw").toCharArray(), 
+											res.getString("fName"), res.getString("lName"),
+											res.getDouble("balance"), res.getString("status").charAt(0));
+				allCust.add(cst);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		AccountLauncher.e720Logger.info(allCust);
+		return allCust;
 	}
 
 	public List<Customer> showAllInactiveCustomers() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = this.cb.getConnection();
+		List<Customer> cstInactList = new ArrayList<Customer>();
+		try {
+			String sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status "
+					+ "from account a "
+					+ "join customer c "
+					+ "on a.main_id = c.main_id "
+					+ "where a.acctype = 'C' and c.status= 'I'; ";
+			Statement s = conn.createStatement();
+
+			ResultSet res = s.executeQuery(sql);
+			while (res.next()) {
+				//(int inId, char[] password ,String inFName, String inLName, double inBalance, char status)
+				Customer cst = new Customer(res.getInt("main_id"), res.getString("pw").toCharArray(), 
+											res.getString("fName"), res.getString("lName"),
+											res.getDouble("balance"), res.getString("status").charAt(0));
+				cstInactList.add(cst);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		AccountLauncher.e720Logger.info(cstInactList);
+		return cstInactList;
 	}
 
 	public Account findAccountById(int id, char type) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = this.cb.getConnection();
+		Account ac = null;
+		try {
+			System.out.println("id :" + id + ", type:" + type);
+			String sql = "select * from project0.account "+
+						 "where main_id = " + id +" and acctype = \'" + type + "\';";
+
+			Statement s = conn.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			if(res.next()) {
+				ac = new Account(res.getInt("main_id"), res.getString("pw").toCharArray(), 
+						res.getString("fName"), res.getString("lName"),
+						res.getString("acctype").charAt(0));
+				return ac;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		return ac;
 	}
 
 	public char findCustomerStatusById(int id) {
-		// TODO Auto-generated method stub
-		return 0;
+		char status = 'I';
+		Connection conn = this.cb.getConnection();
+		
+		try {
+			String sql = "select status from customer "+
+						 "where main_id = " + id +" ;" ;
+			Statement s = conn.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			if(res.next()) {
+				status = res.getString("status").charAt(0);
+				return status;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		return status;
 	}
-
 }

@@ -7,7 +7,7 @@ public class Account{
 	private String fName, lName;
 	private char type;
 	
-	Account(int inId, char[] password){
+	public Account(int inId, char[] password){
 		this.id = inId;
 		this.password = password;
 		numOfAccount++;
