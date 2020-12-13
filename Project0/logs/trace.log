@@ -78,3 +78,18 @@
 2020-12-12 21:33:59 e720 [DEBUG] SERVER HAS STARTED
 2020-12-12 21:34:03 e720 [INFO] EmpA AAA HAS LOGGED IN
 2020-12-12 21:34:06 e720 [INFO] [com.revature.models.Customer@20a14b55, com.revature.models.Customer@39ad977d, com.revature.models.Customer@6da00fb9, com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539, com.revature.models.Customer@75b25825, com.revature.models.Customer@18025ced, com.revature.models.Customer@13cf7d52]
+2020-12-12 21:51:43 e720 [DEBUG] SERVER HAS STARTED
+2020-12-12 21:51:51 e720 [INFO] EmpA AAA HAS LOGGED IN
+2020-12-12 21:51:54 e720 [INFO] [com.revature.models.Customer@20a14b55, com.revature.models.Customer@39ad977d, com.revature.models.Customer@6da00fb9, com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539, com.revature.models.Customer@75b25825, com.revature.models.Customer@18025ced, com.revature.models.Customer@13cf7d52]
+2020-12-12 21:51:55 e720 [INFO] [com.revature.models.Customer@3a3e4aff, com.revature.models.Customer@5d2a4eed, com.revature.models.Customer@57459491, com.revature.models.Customer@3f0846c6]
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(1) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(1) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(2) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(2) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(3) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(3) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(13) IS ACTIVATED
+2020-12-12 21:51:58 e720 [INFO] ACCOUNT ID(13) IS ACTIVATED
+2020-12-12 21:52:20 e720 [INFO] [com.revature.models.Customer@2974f221, com.revature.models.Customer@58fe0499, com.revature.models.Customer@686449f9, com.revature.models.Customer@665df3c6, com.revature.models.Customer@68b6f0d6, com.revature.models.Customer@4044fb95, com.revature.models.Customer@aa549e5, com.revature.models.Customer@36f48b4]
+2020-12-12 21:52:23 e720 [INFO] [com.revature.models.Customer@5c00384f, com.revature.models.Customer@3b7ff809, com.revature.models.Customer@1bb564e2]
+2020-12-12 21:52:28 e720 [INFO] ACCOUNT ID(3) IS ACTIVATED
