@@ -59,9 +59,10 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 			
 		}catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("ACCOUNT CREATION IS FAILED");
 			e.printStackTrace();
 			try {
-				System.out.println("Roll Back");
+				//System.out.println("Roll Back");
 				conn.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -69,7 +70,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 		} finally {
 			try {
-				System.out.println("Commit");
+				//System.out.println("Commit");
 				conn.commit();
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {
@@ -98,9 +99,9 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			updateAcc.executeUpdate();
 			
 		}catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("ACCOUNT UPDATE IS FAILED");
 			e.printStackTrace();
 			try {
-				System.out.println("Roll Back");
 				conn.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -108,11 +109,9 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 		} finally {
 			try {
-				System.out.println("Commit");
 				conn.commit();
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			cb.releaseConnection(conn);
@@ -120,6 +119,43 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		
 		return ac;
 	}
+	
+	public Customer updateCustStatus(Customer ac, char status) {
+		Connection conn = cb.getConnection();
+		try {
+			conn.setAutoCommit(false);
+			
+			String sql = "update customer " +
+						 "set status = ? " + 
+						 "where main_id = ? ;";
+			PreparedStatement updateAcc = conn.prepareStatement(sql);
+			
+			updateAcc.setString(1, Character.toString(status));
+			updateAcc.setInt(2, ac.getId());
+			
+			updateAcc.executeUpdate();
+			
+			
+		}catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("ACCOUNT_STATUS UPDATE IS FAILED");
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.commit();
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			cb.releaseConnection(conn);
+		}
+		return ac;
+	}
+
 
 	public List<Account> showAllAccount() {
 		Connection conn = this.cb.getConnection();
@@ -140,11 +176,11 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 
 		} catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("ACCOUNT LISTS CANNOT BE CALLED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
 		}
-		AccountLauncher.e720Logger.info(all);
 		return all;
 	}
 
@@ -170,6 +206,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 
 		} catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("ACCOUNT_CUSTPMER LISTS CANNOT BE CALLED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
@@ -199,6 +236,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 
 		} catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("ACCOUNT_ACTIVE_CUSTOMER LISTS CANNOT BE CALLED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
@@ -211,20 +249,38 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		Connection conn = this.cb.getConnection();
 		Account ac = null;
 		try {
-			System.out.println("id :" + id + ", type:" + type);
-			String sql = "select * from project0.account "+
+			//System.out.println("id :" + id + ", type:" + type);
+			String sql = "";
+			if(type == 'C') {
+				sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status "
+						+ "from account a "
+						+ "join customer c "
+						+ "on a.main_id = c.main_id "
+						+ "where a.main_id = " + id +" and a.acctype = \'" + type + "\';";
+			}else {
+				sql = "select * from project0.account "+
 						 "where main_id = " + id +" and acctype = \'" + type + "\';";
+			}
+			
 
 			Statement s = conn.createStatement();
 			ResultSet res = s.executeQuery(sql);
 			if(res.next()) {
-				ac = new Account(res.getInt("main_id"), res.getString("pw").toCharArray(), 
-						res.getString("fName"), res.getString("lName"),
-						res.getString("acctype").charAt(0));
-				return ac;
+				//inId, char[] password ,String inFName, String inLName, double inBalance, char status
+				if(type == 'C') {
+					ac = new Customer(res.getInt("main_id"), res.getString("pw").toCharArray(), 
+							res.getString("fName"), res.getString("lName"),
+							res.getDouble("balance"), res.getString("status").charAt(0));
+				}else {
+					ac = new Account(res.getInt("main_id"), res.getString("pw").toCharArray(), 
+							res.getString("fName"), res.getString("lName"),
+							res.getString("acctype").charAt(0));
+					return ac;
+				}
 			}
 			
 		} catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("FINDING ACCOUNT IS FAILED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
@@ -246,6 +302,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 				return status;
 			}
 		} catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);

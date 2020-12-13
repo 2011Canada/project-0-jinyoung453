@@ -8,8 +8,8 @@ import com.revature.launcher.AccountLauncher;
 import com.revature.models.Account;
 import com.revature.models.Customer;
 import com.revature.models.Employee;
-
-public class AccountDAOImplementation implements AccountDAO {
+public class AccountDAOImplementation {
+//public class AccountDAOImplementation implements AccountDAO {
 
 	static List<Account> accList = new ArrayList<Account>();
 	List<Customer> cstList;

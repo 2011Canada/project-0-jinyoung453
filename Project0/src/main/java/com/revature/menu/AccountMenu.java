@@ -39,10 +39,10 @@ public class AccountMenu{
 	public void firstDisplay() {
 		boolean chk = false;
 		while(!chk) {
-			System.out.println( "############################\n" +
+			System.out.println( "==========================\n" +
 			 	 	 			"    1: CUSTOMER\n" +
 			 	 	 			"    2: EMPLOYEE\n" +
-			 	 	 			"############################");
+			 	 	 			"==========================");
 			System.out.print("SELECT A SYSTEM YOU WOULD LIKE TO USE: ");
 			int num = 0;
 			userInput = new Scanner(System.in);
@@ -89,7 +89,7 @@ public class AccountMenu{
 	}
 	
 	public String menu() {
-		String str = "\n############################\n";
+		String str = "\n==========================\n";
 		if(!isEmployee) {
 			str +=  "    1: REGISTER\n" +
 				    "    2: LOGIN\n" +
@@ -98,13 +98,13 @@ public class AccountMenu{
 			str += "    1: LOGIN\n" + 
 		           "    2: BACK\n";
 		}
-		str += "############################\n";
+		str += "==========================\n";
 		return str;
 	}
 	
 	public String menuAfterLogin() {
 		
-		String str = "\n############################\n";
+		String str = "\n==========================\n";
 		if(!isEmployee) {
 			str +=  "    1: BALANCE\n" +
 					"    2: DEPOSIT\n" +
@@ -117,18 +117,18 @@ public class AccountMenu{
 					"    3: TRANSACTION LOG\n" +
 					"    4: LOGOUT\n";
 		}
-		str += "############################\n";
+		str += "==========================\n";
 		return str;
 	}
 	
 	public String approvalDisp() {
-		String str = "\n############################\n";
+		String str = "\n==========================\n";
 			str += "    1: APPROVE ALL\n" + 
 		           "    2: APPROVE ONE\n" + 
 		           "    3: APPROVE ONE BY ONE\n" + 
 		           "    4: REJECT ALL\n" +
 		           "    5: BACK\n";
-		str += "############################\n";
+		str += "==========================\n";
 		return str;
 	}
 	
@@ -155,7 +155,7 @@ public class AccountMenu{
 	public boolean idValidation(Scanner in, char type) {
 		if(in.hasNextInt()) {
 			id = in.nextInt();
-			if(as.findCustomer(id, type) == null) {
+			if(as.findAccount(id, type) == null) {
 				System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
 				return false;
 			}else {
@@ -259,7 +259,7 @@ public class AccountMenu{
 					cstList = as.showAllCustomers();
 					Account newAccount = new Customer(cstList.get(cstList.size()-1).getId()+1, pwArr, fName, lName, amount, 'I');
 					as.create(newAccount);
-					AccountLauncher.e720Logger.debug("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:" + amount);
+					AccountLauncher.e720Logger.info("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:" + amount);
 					
 					System.out.println("\nYOUR NEW ACCOUNT IS CREATED");
 					newAccount.display();
@@ -292,7 +292,7 @@ public class AccountMenu{
 						}
 					}
 					if(chk) {
-						AccountLauncher.e720Logger.debug(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
+						AccountLauncher.e720Logger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
 						chk = false;
 					}
 					myAccount.display();
@@ -335,7 +335,7 @@ public class AccountMenu{
 						}
 					}
 					if(chk) {
-						AccountLauncher.e720Logger.debug(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
+						AccountLauncher.e720Logger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
 						chk = false;
 					}
 					myAccount.display();
@@ -358,7 +358,8 @@ public class AccountMenu{
 				Customer cstAcc = (Customer)myAccount;
 				switch(num) {
 				case 1:
-					info(cstAcc);
+					//info(cstAcc);
+					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
 					break;
 				case 2:
 					chk = false;
@@ -366,12 +367,13 @@ public class AccountMenu{
 						System.out.print("\nENTER DEPOSIT AMOUNT: ");
 						if(amountValidation(new Scanner(System.in))) {
 							as.deposit(cstAcc, amount);
-							System.out.println(amount + "DOLLARS SUCCESSFULLY DEPOSITED");
+							System.out.println(amount + " DOLLARS ARE SUCCESSFULLY DEPOSITED");
 							chk = true;
 							amount = 0;	
 						}
 					}
-					info(cstAcc);
+					//info(cstAcc);
+					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
 					break;
 				case 3:
 					chk = false;
@@ -382,13 +384,14 @@ public class AccountMenu{
 								System.out.println("PLEASE CHECK YOUR BALANCE");
 							}else {
 								as.withdrawal(cstAcc, amount);
-								System.out.println(amount + "DOLLARS SUCCESSFULLY WITHDREW");
+								System.out.println(amount + " DOLLARS ARE SUCCESSFULLY WITHDRAWN");
 								chk = true;
 								amount = 0;
 							}
 						}
 					}
-					info(cstAcc);
+					//info(cstAcc);
+					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
 					break;
 				case 4:
 					boolean amountChk = false;
@@ -403,22 +406,23 @@ public class AccountMenu{
 					while(!amountChk) {
 						System.out.print("\nENTER AMOUNT TO TRANSFER: ");
 						if(amountValidation(new Scanner(System.in))) {
-							transCust = (Customer)as.findCustomer(id, 'C');
+							transCust = (Customer)as.findAccount(id, 'C');
 							if(amount > cstAcc.getBalance()) {
 								System.out.println("PLEASE CHECK YOUR BALANCE");
 							}else {
 								as.withdrawal(cstAcc, amount);
 								as.deposit(transCust, amount);
-								System.out.println(amount + "DOLLARS SUCCESSFULLY TRANSFERED");
+								System.out.println(amount + " DOLLARS SUCCESSFULLY TRANSFERED");
 								amount = 0;		
 								id = -1;
 								amountChk = true;
 							}
 						}
 					}
-					info(cstAcc);
+					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
+					//info(cstAcc);
 					//LINE TO REMOVE
-					info(transCust);
+					//info(transCust);
 					break;
 				case 5:
 					chk = false;
@@ -459,9 +463,9 @@ public class AccountMenu{
 					int n = numValidation(5);
 					switch(n) {
 						case 1:	//APPROVE ALL
-							
 							for(Customer cst: inactCstList) {
-								cst.setStatus('A');
+								//cst.setStatus('A');
+								as.setStatus(cst, 'A');
 								System.out.println("[ID:" + cst.getId() + "] IS ACTIVATED");
 								AccountLauncher.e720Logger.info("ACCOUNT ID(" + cst.getId() + ") IS ACTIVATED");
 							}
@@ -474,13 +478,14 @@ public class AccountMenu{
 								if(userInput.hasNextInt()) {
 									int inputId = userInput.nextInt();
 									if(inputId > 0) {
-										Customer tempCust = (Customer)as.findCustomer(inputId, 'C');
+										Customer tempCust = (Customer)as.findAccount(inputId, 'C');
 										if(tempCust == null) {
 											System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
 										}else {
-											tempCust.setStatus('A');
+											as.setStatus(tempCust, 'A');
+											//tempCust.setStatus('A');
 											System.out.println("[ID:" + tempCust.getId() + "] IS ACTIVATED");
-											AccountLauncher.e720Logger.info("ACCOUNT ID(" + tempCust.getId() + ") IS ACTIVATED");
+											
 											chk = true;	
 										}
 									}else {
@@ -500,7 +505,7 @@ public class AccountMenu{
 									System.out.print("WOULD YOU LIKE TO ACTIVATE THIS ACCOUNT?(Y/N)");
 									yn = ynValidation(new Scanner(System.in));
 									if(yn.equalsIgnoreCase("Y")) {
-										c.setStatus('A');
+										as.setStatus(c, 'A');
 										System.out.println("[ID:" + c.getId() + "] IS ACTIVATED");
 										AccountLauncher.e720Logger.info("ACCOUNT ID(" + c.getId() + ") IS ACTIVATED");
 										chk = true;
@@ -519,7 +524,8 @@ public class AccountMenu{
 				case 3: //TRANSACTION LOG
 					chk = false;
 					try {
-						BufferedReader reader = new BufferedReader(new FileReader("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\logs\\trace.log"));
+						//BufferedReader reader = new BufferedReader(new FileReader("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\logs\\trace.log"));
+						BufferedReader reader = new BufferedReader(new FileReader("D:\\Revature\\SpringToolsDocs\\Project0_JYK\\logs\\trace.log"));
 						String fileContent = "";
 						String currentReadingLine = reader.readLine();
 						
@@ -533,9 +539,12 @@ public class AccountMenu{
 							yn = ynValidation(new Scanner(System.in));
 							if(!yn.equals("")) {
 								if(yn.equalsIgnoreCase("Y")) {
-									BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\trace.log"));
+									//BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\trace.log"));
+									BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\Revature\\SpringToolsDocs\\Project0_JYK\\logs\\TransactionLog.log", true));
 									writer.write(fileContent);
 									writer.close();
+									System.out.println("\nTRANSACTION LOG IS DOWNLOADED");
+									System.out.println("FILE LOCATION: D:\\Revature\\SpringToolsDocs\\Project0_JYK\\logs\\TransactionLog.log");
 								}
 								chk = true;
 							}

@@ -51,30 +51,58 @@
 2020-12-12 20:15:53 e720 [DEBUG] EmpA AAA HAS LOGGED IN
 2020-12-12 20:16:39 e720 [INFO] SERVER HAS STARTED
 2020-12-12 20:16:42 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 19:19:41 e720 [INFO] SERVER HAS STARTED
+2020-12-12 19:20:18 e720 [INFO] SERVER HAS STARTED
+2020-12-12 19:20:30 e720 [INFO] [com.revature.models.Customer@39ad977d, com.revature.models.Customer@6da00fb9, com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539, com.revature.models.Customer@75b25825, com.revature.models.Customer@18025ced]
+2020-12-12 19:20:31 e720 [DEBUG] NEW ACCOUNT CREATED[ACCOUNT ID:12, NAME:jin yeong, DEPOSIT:1000000.0
+2020-12-12 19:22:14 e720 [DEBUG] EmpB BBB HAS LOGGED IN
+2020-12-12 19:22:22 e720 [INFO] [com.revature.models.Customer@2974f221, com.revature.models.Customer@58fe0499, com.revature.models.Customer@686449f9, com.revature.models.Customer@665df3c6, com.revature.models.Customer@68b6f0d6, com.revature.models.Customer@4044fb95, com.revature.models.Customer@aa549e5]
+2020-12-12 19:22:27 e720 [INFO] [com.revature.models.Customer@36f48b4, com.revature.models.Customer@5c00384f, com.revature.models.Customer@3b7ff809, com.revature.models.Customer@1bb564e2, com.revature.models.Customer@62e6b5c8, com.revature.models.Customer@3f792b9b, com.revature.models.Customer@7b8233cd]
+2020-12-12 19:22:33 e720 [INFO] [com.revature.models.Customer@4b20ca2b, com.revature.models.Customer@1cbf6e72, com.revature.models.Customer@6aecbb8d, com.revature.models.Customer@1af146, com.revature.models.Customer@4da602fc]
+2020-12-12 19:33:08 e720 [INFO] SERVER HAS STARTED
+2020-12-12 19:33:49 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 19:33:52 e720 [INFO] [com.revature.models.Customer@4c4748bf, com.revature.models.Customer@7ce97ee5, com.revature.models.Customer@32c8e539, com.revature.models.Customer@73dce0e6, com.revature.models.Customer@5a85c92]
+2020-12-12 19:51:46 e720 [INFO] SERVER HAS STARTED
+2020-12-12 19:51:51 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 19:51:53 e720 [INFO] [com.revature.models.Customer@119020fb, com.revature.models.Customer@3d9f6567, com.revature.models.Customer@c055c54, com.revature.models.Customer@25e2ab5a, com.revature.models.Customer@35e5d0e5]
+2020-12-12 19:52:00 e720 [INFO] ACCOUNT ID(2) IS ACTIVATED
+2020-12-12 20:01:36 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:02:45 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:02:50 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:02:59 e720 [INFO] [com.revature.models.Customer@20a14b55, com.revature.models.Customer@39ad977d, com.revature.models.Customer@6da00fb9, com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539]
+2020-12-12 20:03:04 e720 [INFO] ACCOUNT ID(2) IS ACTIVATED
+2020-12-12 20:03:58 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:04:01 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:04:03 e720 [INFO] [com.revature.models.Customer@45905bff, com.revature.models.Customer@2a2c13a8, com.revature.models.Customer@b6b1987, com.revature.models.Customer@6b44435b, com.revature.models.Customer@2ccca26f]
+2020-12-12 20:04:07 e720 [INFO] ACCOUNT ID(2) IS ACTIVATED
+2020-12-12 20:04:44 e720 [INFO] [com.revature.models.Customer@18025ced, com.revature.models.Customer@13cf7d52, com.revature.models.Customer@3a3e4aff, com.revature.models.Customer@5d2a4eed]
+2020-12-12 20:04:47 e720 [INFO] ACCOUNT ID(1) IS ACTIVATED
+2020-12-12 20:04:47 e720 [INFO] ACCOUNT ID(9) IS ACTIVATED
+2020-12-12 20:04:47 e720 [INFO] ACCOUNT ID(11) IS ACTIVATED
+2020-12-12 20:04:47 e720 [INFO] ACCOUNT ID(12) IS ACTIVATED
+2020-12-12 20:05:31 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:05:39 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:05:40 e720 [INFO] [com.revature.models.Customer@20a14b55, com.revature.models.Customer@39ad977d, com.revature.models.Customer@6da00fb9, com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539, com.revature.models.Customer@75b25825, com.revature.models.Customer@18025ced]
+2020-12-12 20:05:46 e720 [INFO] [com.revature.models.Customer@13cf7d52, com.revature.models.Customer@3a3e4aff, com.revature.models.Customer@5d2a4eed, com.revature.models.Customer@57459491]
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(1) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(1) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(9) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(9) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(11) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(11) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(12) IS ACTIVATED
+2020-12-12 20:05:47 e720 [INFO] ACCOUNT ID(12) IS ACTIVATED
+2020-12-12 20:05:51 e720 [INFO] [com.revature.models.Customer@1a7288a3, com.revature.models.Customer@2974f221, com.revature.models.Customer@58fe0499, com.revature.models.Customer@686449f9, com.revature.models.Customer@665df3c6, com.revature.models.Customer@68b6f0d6, com.revature.models.Customer@4044fb95]
+2020-12-12 20:13:19 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:13:23 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:14:12 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:14:15 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:14:36 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:14:39 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:15:24 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:15:50 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:15:53 e720 [DEBUG] EmpA AAA HAS LOGGED IN
+2020-12-12 20:16:39 e720 [INFO] SERVER HAS STARTED
+2020-12-12 20:16:42 e720 [DEBUG] EmpA AAA HAS LOGGED IN
 2020-12-12 20:18:57 e720 [INFO] SERVER HAS STARTED
 2020-12-12 20:19:14 e720 [DEBUG] EmpA AAA HAS LOGGED IN
-2020-12-12 20:19:54 e720 [DEBUG] EmpA AAA HAS LOGGED IN
-2020-12-12 20:19:56 e720 [INFO] [com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539, com.revature.models.Customer@75b25825, com.revature.models.Customer@18025ced, com.revature.models.Customer@13cf7d52, com.revature.models.Customer@3a3e4aff, com.revature.models.Customer@5d2a4eed]
-2020-12-12 20:20:30 e720 [INFO] [com.revature.models.Customer@3f0846c6, com.revature.models.Customer@77a98a6a, com.revature.models.Customer@78fbff54, com.revature.models.Customer@3e10dc6, com.revature.models.Customer@7e22550a, com.revature.models.Customer@45e37a7e, com.revature.models.Customer@62452cc9]
-2020-12-12 20:20:30 e720 [DEBUG] NEW ACCOUNT CREATED[ACCOUNT ID:13, NAME:Andrew Lee, DEPOSIT:30000.0
-2020-12-12 20:23:15 e720 [DEBUG] Cust4 444 HAS LOGGED IN
-2020-12-12 20:24:48 e720 [INFO] SERVER HAS STARTED
-2020-12-12 20:24:56 e720 [DEBUG] Cust4 444 HAS LOGGED IN
-2020-12-12 20:26:40 e720 [INFO] SERVER HAS STARTED
-2020-12-12 20:26:58 e720 [DEBUG] Cust4 444 HAS LOGGED IN
-2020-12-12 20:27:15 e720 [INFO] Cust4 444 HAS DEPOSITED
-2020-12-12 20:29:34 e720 [INFO] SERVER HAS STARTED
-2020-12-12 20:29:39 e720 [DEBUG] Cust4 444 HAS LOGGED IN
-2020-12-12 20:29:45 e720 [INFO] Cust4 444 HAS DEPOSITED
-2020-12-12 20:30:06 e720 [INFO] Cust4 444 HAS DEPOSITED
-2020-12-12 20:32:13 e720 [INFO] Cust4 444 HAS DEPOSITED
-2020-12-12 21:21:11 e720 [INFO] SERVER HAS STARTED
-2020-12-12 21:21:17 e720 [DEBUG] Cust4 444 HAS LOGGED IN
-2020-12-12 21:21:24 e720 [INFO] Cust4 444 HAS DEPOSITED: $10000.0
-2020-12-12 21:21:37 e720 [INFO] Cust4 444 HAS DEPOSITED: $100.0
-2020-12-12 21:21:48 e720 [INFO] Cust4 444 HAS WITHDRAWN: $700.0
-2020-12-12 21:23:40 e720 [INFO] Cust4 444 HAS WITHDRAWN: $2000.0
-2020-12-12 21:23:40 e720 [INFO] Cust6 666 HAS DEPOSITED: $2000.0
-2020-12-12 21:33:59 e720 [DEBUG] SERVER HAS STARTED
-2020-12-12 21:34:03 e720 [INFO] EmpA AAA HAS LOGGED IN
-2020-12-12 21:34:06 e720 [INFO] [com.revature.models.Customer@20a14b55, com.revature.models.Customer@39ad977d, com.revature.models.Customer@6da00fb9, com.revature.models.Customer@a202ccb, com.revature.models.Customer@20f12539, com.revature.models.Customer@75b25825, com.revature.models.Customer@18025ced, com.revature.models.Customer@13cf7d52]

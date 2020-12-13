@@ -10,6 +10,7 @@ public interface AccountDAO {
 	
 	public Account createAccount(Account ac);
 	public Account updateAccount(Customer ac, double amount);
+	public Customer updateCustStatus(Customer ac, char status);
 	public List<Account> showAllAccount();
 	public List<Customer> showAllCustomers();
 	public List<Customer> showAllInactiveCustomers();

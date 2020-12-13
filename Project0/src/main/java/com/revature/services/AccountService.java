@@ -14,10 +14,11 @@ public interface AccountService {
 	public Account login(int id,char type);
 	
 	//findAccount
-	public Account findCustomer(int id, char type);
+	public Account findAccount(int id, char type);
 	
 	public char chkStatus(int id);
 	
+	public void setStatus(Customer cs, char status);
 	//withdrawal
 	public void withdrawal(Customer cs, double amt);
 	

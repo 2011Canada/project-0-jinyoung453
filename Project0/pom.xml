@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Revature</groupId>
-  <artifactId>Project0</artifactId>
+  <groupId>Reavature</groupId>
+  <artifactId>entertainment</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Project0</name>
-  <description>2011Canada/project0</description>
+  <name>Entertainment720</name>
+  <description>EntertainmentMedia</description>
   <dependencies>
-  		<dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>2.11.2</version>
