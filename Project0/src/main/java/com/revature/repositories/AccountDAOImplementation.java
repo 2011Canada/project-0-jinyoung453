@@ -17,9 +17,9 @@ public class AccountDAOImplementation {
 	List<Customer> inactCstList;
 	
 	static {
-		Account jain = new Customer(1, new char[]{'1'} ,"Jain", "Kim", 1000.00, 'I');
-		Account ryan = new Customer(2,new char[]{'2'} ,"Ryan", "Hong", 2000.00, 'I');
-		Account sue = new Customer(3,new char[]{'3'} ,"Sue", "Shin", 3000.00, 'I');
+		Account jain = new Customer(1, new char[]{'1'} ,"Jain", "Kim", 1000.00, 'I', "New");
+		Account ryan = new Customer(2,new char[]{'2'} ,"Ryan", "Hong", 2000.00, 'I', "New");
+		Account sue = new Customer(3,new char[]{'3'} ,"Sue", "Shin", 3000.00, 'I', "New");
 		Account emp1 = new Employee(1,new char[]{'1'} ,"EMP", "AAA");
 		Account emp2 = new Employee(2, new char[]{'2'},"EMP2", "BBB");
 		Account emp3 = new Employee(3,new char[]{'3'} ,"EMP3", "CCC");

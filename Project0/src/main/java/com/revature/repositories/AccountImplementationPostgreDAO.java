@@ -22,6 +22,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 	private ConnectionBank cb = ConnectionBank.getConnectionBank();
 	
 	public Account createAccount(Account ac) {
+		System.out.println("creation");
 		Connection conn = cb.getConnection();
 		try {
 			conn.setAutoCommit(false);
@@ -48,12 +49,13 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			ac.setId(newId);
 			if(ac.getClass() == Customer.class) {
 				Customer cs = (Customer) ac;
-				String custSql = "insert into customer (main_id, balance, status) "
-								+ "values(?, ?, ?);";
+				String custSql = "insert into customer (main_id, balance, status, approval) "
+								+ "values(?, ?, ?, ?);";
 				PreparedStatement insertCust = conn.prepareStatement(custSql);
 				insertCust.setInt(1, newId);
 				insertCust.setDouble(2, cs.getBalance());
 				insertCust.setString(3, String.valueOf(cs.getStatus()));
+				insertCust.setString(4, cs.getApproval());
 				
 				insertCust.executeUpdate();
 			}
@@ -120,18 +122,19 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		return ac;
 	}
 	
-	public Customer updateCustStatus(Customer ac, char status) {
+	public Customer updateCustStatus(Customer ac, char status, String approval) {
 		Connection conn = cb.getConnection();
 		try {
 			conn.setAutoCommit(false);
 			
-			String sql = "update customer " +
-						 "set status = ? " + 
+			String sql = "update project0.customer " +
+						 "set status = ?, approval = ? " + 
 						 "where main_id = ? ;";
 			PreparedStatement updateAcc = conn.prepareStatement(sql);
 			
 			updateAcc.setString(1, Character.toString(status));
-			updateAcc.setInt(2, ac.getId());
+			updateAcc.setString(2, approval);
+			updateAcc.setInt(3, ac.getId());
 			
 			updateAcc.executeUpdate();
 			
@@ -189,7 +192,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		List<Customer> allCust = new ArrayList<Customer>();
 
 		try {
-			String sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status "
+			String sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status, c.approval "
 					+ "from account a "
 					+ "join customer c "
 					+ "on a.main_id = c.main_id "
@@ -201,7 +204,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 				//(int inId, char[] password ,String inFName, String inLName, double inBalance, char status)
 				Customer cst = new Customer(res.getInt("main_id"), res.getString("pw").toCharArray(), 
 											res.getString("fName"), res.getString("lName"),
-											res.getDouble("balance"), res.getString("status").charAt(0));
+											res.getDouble("balance"), res.getString("status").charAt(0), res.getString("approval"));
 				allCust.add(cst);
 			}
 
@@ -211,7 +214,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		} finally {
 			cb.releaseConnection(conn);
 		}
-		AccountLauncher.e720Logger.info(allCust);
+		//AccountLauncher.e720Logger.info(allCust);
 		return allCust;
 	}
 
@@ -219,11 +222,11 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		Connection conn = this.cb.getConnection();
 		List<Customer> cstInactList = new ArrayList<Customer>();
 		try {
-			String sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status "
+			String sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status, c.approval "
 					+ "from account a "
 					+ "join customer c "
 					+ "on a.main_id = c.main_id "
-					+ "where a.acctype = 'C' and c.status= 'I'; ";
+					+ "where a.acctype = 'C' and c.status= 'I' and c.approval = \'New\'; ";
 			Statement s = conn.createStatement();
 
 			ResultSet res = s.executeQuery(sql);
@@ -231,7 +234,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 				//(int inId, char[] password ,String inFName, String inLName, double inBalance, char status)
 				Customer cst = new Customer(res.getInt("main_id"), res.getString("pw").toCharArray(), 
 											res.getString("fName"), res.getString("lName"),
-											res.getDouble("balance"), res.getString("status").charAt(0));
+											res.getDouble("balance"), res.getString("status").charAt(0), res.getString("approval"));
 				cstInactList.add(cst);
 			}
 
@@ -241,22 +244,22 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		} finally {
 			cb.releaseConnection(conn);
 		}
-		AccountLauncher.e720Logger.info(cstInactList);
+		//AccountLauncher.e720Logger.info(cstInactList);
 		return cstInactList;
 	}
 
-	public Account findAccountById(int id, char type) {
+	public Account findAccountById(int id, char type, String approval) {
 		Connection conn = this.cb.getConnection();
 		Account ac = null;
 		try {
 			//System.out.println("id :" + id + ", type:" + type);
 			String sql = "";
 			if(type == 'C') {
-				sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status "
+				sql = "select a.main_id, a.pw, a.fname, a.lname, c.balance, c.status, c.approval "
 						+ "from account a "
 						+ "join customer c "
 						+ "on a.main_id = c.main_id "
-						+ "where a.main_id = " + id +" and a.acctype = \'" + type + "\';";
+						+ "where a.main_id = " + id +" and a.acctype = \'" + type + "\' and c.approval = \'" + approval + "\';";
 			}else {
 				sql = "select * from project0.account "+
 						 "where main_id = " + id +" and acctype = \'" + type + "\';";
@@ -270,7 +273,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 				if(type == 'C') {
 					ac = new Customer(res.getInt("main_id"), res.getString("pw").toCharArray(), 
 							res.getString("fName"), res.getString("lName"),
-							res.getDouble("balance"), res.getString("status").charAt(0));
+							res.getDouble("balance"), res.getString("status").charAt(0), res.getString("approval"));
 				}else {
 					ac = new Account(res.getInt("main_id"), res.getString("pw").toCharArray(), 
 							res.getString("fName"), res.getString("lName"),
@@ -288,6 +291,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 		return ac;
 	}
 
+	
 	public char findCustomerStatusById(int id) {
 		char status = 'I';
 		Connection conn = this.cb.getConnection();
@@ -308,5 +312,27 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			cb.releaseConnection(conn);
 		}
 		return status;
+	}
+	
+	public String findCustomerApprovalById(int id) {
+		String approval = "";
+		Connection conn = this.cb.getConnection();
+		
+		try {
+			String sql = "select approval from project0.customer "+
+						 "where main_id = " + id +" ;" ;
+			Statement s = conn.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			if(res.next()) {
+				approval = res.getString("approval");
+				return approval;
+			}
+		} catch (SQLException e) {
+			AccountLauncher.e720Logger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		return approval;
 	}
 }

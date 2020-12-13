@@ -23,6 +23,7 @@ public class AccountMenu{
 	static String status = "N";
 	static String yn = "";
 	static boolean isEmployee;
+	static boolean backToMenu;
 	static double amount = 0;
 	static int id = -1;
 	AccountService as;
@@ -154,23 +155,36 @@ public class AccountMenu{
 	
 	public boolean idValidation(Scanner in, char type) {
 		if(in.hasNextInt()) {
+			backToMenu = false;
 			id = in.nextInt();
-			if(as.findAccount(id, type) == null) {
-				System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
-				return false;
-			}else {
-				if(type == 'C') {
-					if(as.chkStatus(id) == 'I') {
-						System.out.println("[WARNING] THE ACCOUNT IS NOT ACTIVATED");
-						return false;
+			//System.out.println("id == " + id);
+			if(id == 0) {
+				backToMenu = true;
+				return true;
+			}
+			if(type == 'C') {
+				if(as.chkApprovalStatus(id).equalsIgnoreCase("Approved")) {
+					if(as.chkActivationStatus(id) == 'I') {
+						System.out.println("[WARNING] THE ACCOUNT HAS BEEN REJECTED. PLEASE VISIT A BANK");
+						id = 0;
+						backToMenu = true;
+						return true;
 					}else {
 						return true;
 					}
 				}else {
+					System.out.println("[WARNING] THE ACCOUNT IS NOT ACTIVATED");
+					return false;
+				}
+			}else {
+				if(as.findAccount(id, type, "Approved") == null) {
+					System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
+					return false;
+				}else {
 					return true;	
 				}
-				
 			}
+
 		}else {
 			System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
 			return false;
@@ -257,7 +271,7 @@ public class AccountMenu{
 						}
 					}
 					cstList = as.showAllCustomers();
-					Account newAccount = new Customer(cstList.get(cstList.size()-1).getId()+1, pwArr, fName, lName, amount, 'I');
+					Account newAccount = new Customer(cstList.get(cstList.size()-1).getId()+1, pwArr, fName, lName, amount, 'I', "New");
 					as.create(newAccount);
 					AccountLauncher.e720Logger.info("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:" + amount);
 					
@@ -269,10 +283,14 @@ public class AccountMenu{
 				case 2:	//Login
 					chk = false;
 					while(!chk) {
-						System.out.print("\nPLEASE ENTER YOUR ID: ");
+						System.out.println("\n(0: GO BACK TO MENU)");
+						System.out.print("PLEASE ENTER YOUR ID: ");
 						if(idValidation(new Scanner(System.in), 'C')) {
 							chk = true;
 						}
+					}
+					if(backToMenu) {
+						break;
 					}
 					chk = false;
 					while(!chk) {
@@ -398,15 +416,19 @@ public class AccountMenu{
 					boolean accountChk = false;
 					Customer transCust = null;
 					while(!accountChk) {
-						System.out.print("\nENTER ACCOUNT NUMBER TO TRANSFER: ");
+						System.out.println("\n(0: GO BACK TO MENU)");
+						System.out.print("ENTER ACCOUNT NUMBER TO TRANSFER: ");
 						if(idValidation(new Scanner(System.in),'C')) {
 							accountChk = true;
 						}
 					}
+					if(backToMenu) {
+						break;
+					}
 					while(!amountChk) {
 						System.out.print("\nENTER AMOUNT TO TRANSFER: ");
 						if(amountValidation(new Scanner(System.in))) {
-							transCust = (Customer)as.findAccount(id, 'C');
+							transCust = (Customer)as.findAccount(id, 'C', "Approved");
 							if(amount > cstAcc.getBalance()) {
 								System.out.println("PLEASE CHECK YOUR BALANCE");
 							}else {
@@ -465,7 +487,7 @@ public class AccountMenu{
 						case 1:	//APPROVE ALL
 							for(Customer cst: inactCstList) {
 								//cst.setStatus('A');
-								as.setStatus(cst, 'A');
+								as.setStatus(cst, 'A', "Approved");
 								System.out.println("[ID:" + cst.getId() + "] IS ACTIVATED");
 								AccountLauncher.e720Logger.info("ACCOUNT ID(" + cst.getId() + ") IS ACTIVATED");
 							}
@@ -478,11 +500,11 @@ public class AccountMenu{
 								if(userInput.hasNextInt()) {
 									int inputId = userInput.nextInt();
 									if(inputId > 0) {
-										Customer tempCust = (Customer)as.findAccount(inputId, 'C');
+										Customer tempCust = (Customer)as.findAccount(inputId, 'C', "New");
 										if(tempCust == null) {
 											System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
 										}else {
-											as.setStatus(tempCust, 'A');
+											as.setStatus(tempCust, 'A', "Approved");
 											//tempCust.setStatus('A');
 											System.out.println("[ID:" + tempCust.getId() + "] IS ACTIVATED");
 											
@@ -505,12 +527,15 @@ public class AccountMenu{
 									System.out.print("WOULD YOU LIKE TO ACTIVATE THIS ACCOUNT?(Y/N)");
 									yn = ynValidation(new Scanner(System.in));
 									if(yn.equalsIgnoreCase("Y")) {
-										as.setStatus(c, 'A');
+										as.setStatus(c, 'A', "Approved");
 										System.out.println("[ID:" + c.getId() + "] IS ACTIVATED");
 										AccountLauncher.e720Logger.info("ACCOUNT ID(" + c.getId() + ") IS ACTIVATED");
 										chk = true;
 									}
-									else if (yn.equalsIgnoreCase("N")) chk = true;
+									else if (yn.equalsIgnoreCase("N")) {
+										as.setStatus(c, 'I', "Approved");
+										chk = true;
+									}
 									else continue;
 								}
 							}
@@ -524,8 +549,8 @@ public class AccountMenu{
 				case 3: //TRANSACTION LOG
 					chk = false;
 					try {
-						//BufferedReader reader = new BufferedReader(new FileReader("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\logs\\trace.log"));
-						BufferedReader reader = new BufferedReader(new FileReader("D:\\Revature\\SpringToolsDocs\\Project0_JYK\\logs\\trace.log"));
+						
+						BufferedReader reader = new BufferedReader(new FileReader("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\logs\\trace.log"));
 						String fileContent = "";
 						String currentReadingLine = reader.readLine();
 						
@@ -540,11 +565,11 @@ public class AccountMenu{
 							if(!yn.equals("")) {
 								if(yn.equalsIgnoreCase("Y")) {
 									//BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\trace.log"));
-									BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\Revature\\SpringToolsDocs\\Project0_JYK\\logs\\TransactionLog.log", true));
+									BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\logs\\TransactionLog.log", true));
 									writer.write(fileContent);
 									writer.close();
 									System.out.println("\nTRANSACTION LOG IS DOWNLOADED");
-									System.out.println("FILE LOCATION: D:\\Revature\\SpringToolsDocs\\Project0_JYK\\logs\\TransactionLog.log");
+									System.out.println("FILE LOCATION: D:\\Revature\\Project0\\project-0-jinyoung453\\Project0\\logs\\TransactionLog.log");
 								}
 								chk = true;
 							}

@@ -14,11 +14,13 @@ public interface AccountService {
 	public Account login(int id,char type);
 	
 	//findAccount
-	public Account findAccount(int id, char type);
+	public Account findAccount(int id, char type, String approval);
 	
-	public char chkStatus(int id);
+	public char chkActivationStatus(int id);
 	
-	public void setStatus(Customer cs, char status);
+	public String chkApprovalStatus(int id);
+	
+	public void setStatus(Customer cs, char status, String approval);
 	//withdrawal
 	public void withdrawal(Customer cs, double amt);
 	

@@ -16,23 +16,29 @@ public class AccountServiceImplementation implements AccountService {
 	}
 
 	public Account create(Account ac) {
+		System.out.println("Service_create");
 		return ad.createAccount(ac);
 	}
 
 	public Account login(int id, char type) {
-		return ad.findAccountById(id, type);
+		return ad.findAccountById(id, type, "Approved");
 	}
 
-	public Account findAccount(int id, char type) {
-		return ad.findAccountById(id, type);
+	public Account findAccount(int id, char type, String approval) {
+		return ad.findAccountById(id, type, approval);
 	}
 
-	public char chkStatus(int id) {
+	
+	public char chkActivationStatus(int id) {
 		return ad.findCustomerStatusById(id);
 	}
+	
+	public String chkApprovalStatus(int id) {
+		return ad.findCustomerApprovalById(id);
+	}
 
-	public void setStatus(Customer cs, char status) {
-		ad.updateCustStatus(cs, status);
+	public void setStatus(Customer cs, char status, String approval) {
+		ad.updateCustStatus(cs, status, approval);
 		AccountLauncher.e720Logger.info("ACCOUNT ID(" + cs.getId() + ") IS ACTIVATED");
 	}
 

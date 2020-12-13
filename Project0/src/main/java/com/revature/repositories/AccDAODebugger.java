@@ -20,7 +20,7 @@ public class AccDAODebugger {
 		*/
 		
 		AccountDAO ad = new AccountImplementationPostgreDAO();
-		Account ac = new Customer(22, new char[]{'1'} ,"NEW", "Kim", 1000.00, 'I');
+		Account ac = new Customer(22, new char[]{'1'} ,"NEW", "Kim", 1000.00, 'I', "NEW");
 		
 		//	ad.createAccount(ac);
 		
@@ -40,7 +40,7 @@ public class AccDAODebugger {
 		}
 		*/
 		
-		Account cst = ad.findAccountById(2, 'C');
+		Account cst = ad.findAccountById(1, 'C',"New");
 		cst.display();
 	
 		//char a = ad.findCustomerStatusById(10);
