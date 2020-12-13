@@ -16,7 +16,6 @@ public class AccountServiceImplementation implements AccountService {
 	}
 
 	public Account create(Account ac) {
-		System.out.println("Service_create");
 		return ad.createAccount(ac);
 	}
 

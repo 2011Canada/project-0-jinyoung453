@@ -22,7 +22,6 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 	private ConnectionBank cb = ConnectionBank.getConnectionBank();
 	
 	public Account createAccount(Account ac) {
-		System.out.println("creation");
 		Connection conn = cb.getConnection();
 		try {
 			conn.setAutoCommit(false);
