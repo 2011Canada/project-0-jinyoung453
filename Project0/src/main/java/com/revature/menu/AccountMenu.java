@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -165,14 +163,19 @@ public class AccountMenu{
 			if(type == 'C') {
 				if(as.chkApprovalStatus(id).equalsIgnoreCase("Approved")) {
 					if(as.chkActivationStatus(id) == 'I') {
-						System.out.println("[WARNING] THE ACCOUNT HAS BEEN REJECTED. PLEASE VISIT A BANK");
+						System.out.println("[WARNING] INVALID ACCOUNT");
 						id = 0;
 						backToMenu = true;
 						return true;
 					}else {
 						return true;
 					}
+				}else if(as.chkAccType(id).equalsIgnoreCase("E")){
+					System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
+					return false;
+				
 				}else {
+					//System.out.println("as.chkActivationStatus(id): "+ as.chkActivationStatus(id));
 					System.out.println("[WARNING] THE ACCOUNT IS NOT ACTIVATED");
 					return false;
 				}
@@ -250,33 +253,57 @@ public class AccountMenu{
 			if(!isEmployee) {
 				switch(num) {
 				case 1:	//Create New Account
-					chk = false;
-					System.out.print("FIRST NAME: ");
-					String fName = userInput.next();
-					
-					System.out.print("LAST NAME: ");
-					String lName = userInput.next();
-					
-					System.out.print("PASSWORD: ");
-					String password = userInput.next();
-					
-					char[] pwArr = password.toCharArray();
-					
-					while(!chk) {
-						System.out.print("DEPOSIT AMOUNT: ");
-						if(amountValidation(new Scanner(System.in))) {
-							chk = true;
-						}else {
-							System.out.println();
+					boolean registerChk = false;
+					String fName = "";
+					String lName = "";
+					String password = "";
+					char[] pwArr = null;
+					while(!registerChk) {
+						chk = false;
+						System.out.print("\nFIRST NAME: ");
+						fName = userInput.next();
+						
+						System.out.print("LAST NAME: ");
+						lName = userInput.next();
+						
+						System.out.print("PASSWORD: ");
+						password = userInput.next();
+						
+						pwArr = password.toCharArray();
+						
+						while(!chk) {
+							System.out.print("DEPOSIT AMOUNT: ");
+							if(amountValidation(new Scanner(System.in))) {
+								chk = true;
+							}else {
+								System.out.println();
+							}
+						}
+						chk =false;
+						while(!chk) {
+							System.out.println("\nIS YOUR INFORMATION CORRECT??(Y/N)");
+							System.out.println("NAME: " + fName + " " + lName + ", PASSWORD: " + password + ", DEPOSIT AMOUNT: " + amount);
+							yn = ynValidation(new Scanner(System.in));
+							if(!yn.equals("")) {
+								if(yn.equalsIgnoreCase("Y")) {
+									status = "N";
+									myAccount = null;
+									System.out.println();
+									registerChk = true;
+									break;
+								}
+								chk = true;
+							}
 						}
 					}
+					
 					cstList = as.showAllCustomers();
 					Account newAccount = new Customer(cstList.get(cstList.size()-1).getId()+1, pwArr, fName, lName, amount, 'I', "New");
 					as.create(newAccount);
-					AccountLauncher.e720Logger.info("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:" + amount);
+					AccountLauncher.accountLogger.info("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:" + amount);
 					
 					System.out.println("\nYOUR NEW ACCOUNT IS CREATED");
-					newAccount.display();
+					newAccount.display(false);
 					newAccount = null;
 					amount = 0.0;
 					break;
@@ -310,10 +337,10 @@ public class AccountMenu{
 						}
 					}
 					if(chk) {
-						AccountLauncher.e720Logger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
+						AccountLauncher.accountLogger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
 						chk = false;
 					}
-					myAccount.display();
+					myAccount.display(true);
 					status = "L";
 					break;
 				case 3: //back
@@ -330,10 +357,14 @@ public class AccountMenu{
 				case 1: //login
 					chk = false;
 					while(!chk) {
-						System.out.print("\nPLEASE ENTER YOUR ACCOUNT ID: ");
+						System.out.println("\n(0: GO BACK TO MENU)");
+						System.out.print("PLEASE ENTER YOUR ACCOUNT ID: ");
 						if(idValidation(new Scanner(System.in),'E')) {
 							chk = true;
 						}
+					}
+					if(backToMenu) {
+						break;
 					}
 					chk = false;
 					while(!chk) {
@@ -353,7 +384,7 @@ public class AccountMenu{
 						}
 					}
 					if(chk) {
-						AccountLauncher.e720Logger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
+						AccountLauncher.accountLogger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
 						chk = false;
 					}
 					myAccount.display();
@@ -418,8 +449,13 @@ public class AccountMenu{
 					while(!accountChk) {
 						System.out.println("\n(0: GO BACK TO MENU)");
 						System.out.print("ENTER ACCOUNT NUMBER TO TRANSFER: ");
+						
 						if(idValidation(new Scanner(System.in),'C')) {
-							accountChk = true;
+							if(cstAcc.getId() == id) {
+								System.out.println("INVALID INPUT!! TRY AGAIN!!");
+							}else {
+								accountChk = true;	
+							}
 						}
 					}
 					if(backToMenu) {
@@ -434,7 +470,7 @@ public class AccountMenu{
 							}else {
 								as.withdrawal(cstAcc, amount);
 								as.deposit(transCust, amount);
-								System.out.println(amount + " DOLLARS SUCCESSFULLY TRANSFERED");
+								System.out.println(amount + " DOLLARS SUCCESSFULLY TRANSFERED TO " + transCust.getId());
 								amount = 0;		
 								id = -1;
 								amountChk = true;
@@ -477,74 +513,100 @@ public class AccountMenu{
 					break;
 				case 2: //APPROVAL ACCOUNT
 					List<Customer> inactCstList = as.showInactiveCustomers();
-					System.out.println("\n** INACTIVE ACCOUNT LIST **");
-					for(Customer cst: inactCstList) {
-						cst.display();
+					System.out.println("\n** NEW ACCOUNT LIST **");
+					if(inactCstList.size() == 0) {
+						System.out.println("THERE IS NONE OF NEW ACCOUNT");
+					}else {
+						for(Customer cst: inactCstList) {
+							cst.display();
+						}	
 					}
 					System.out.println(approvalDisp());
 					int n = numValidation(5);
 					switch(n) {
 						case 1:	//APPROVE ALL
-							for(Customer cst: inactCstList) {
-								//cst.setStatus('A');
-								as.setStatus(cst, 'A', "Approved");
-								System.out.println("[ID:" + cst.getId() + "] IS ACTIVATED");
-								AccountLauncher.e720Logger.info("ACCOUNT ID(" + cst.getId() + ") IS ACTIVATED");
+							if(inactCstList.size() == 0) {
+								System.out.println("THERE IS NONE OF NEW ACCOUNT");
+							}else {
+								for(Customer cst: inactCstList) {
+									//cst.setStatus('A');
+									as.setStatus(cst, 'A', "Approved");
+									System.out.println("[ID:" + cst.getId() + "] IS ACTIVATED");
+									AccountLauncher.accountLogger.info("ACCOUNT ID(" + cst.getId() + ") IS ACTIVATED");
+								}
 							}
 							break;
 						case 2: //APPROVE ONE
-							chk = false;
-							while(!chk) {
-								System.out.print("\nPLEASE ENTER THE ACCOUNT ID TO ACTIVATE: ");
-								userInput = new Scanner(System.in);
-								if(userInput.hasNextInt()) {
-									int inputId = userInput.nextInt();
-									if(inputId > 0) {
-										Customer tempCust = (Customer)as.findAccount(inputId, 'C', "New");
-										if(tempCust == null) {
-											System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
+							if(inactCstList.size() == 0) {
+								System.out.println("THERE IS NONE OF NEW ACCOUNT");
+							}else {
+								chk = false;
+								while(!chk) {
+									System.out.print("\nPLEASE ENTER THE ACCOUNT ID TO ACTIVATE: ");
+									userInput = new Scanner(System.in);
+									if(userInput.hasNextInt()) {
+										int inputId = userInput.nextInt();
+										if(inputId > 0) {
+											Customer tempCust = (Customer)as.findAccount(inputId, 'C', "New");
+											if(tempCust == null) {
+												System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
+											}else {
+												as.setStatus(tempCust, 'A', "Approved");
+												//tempCust.setStatus('A');
+												System.out.println("[ID:" + tempCust.getId() + "] IS ACTIVATED");
+												
+												chk = true;	
+											}
 										}else {
-											as.setStatus(tempCust, 'A', "Approved");
-											//tempCust.setStatus('A');
-											System.out.println("[ID:" + tempCust.getId() + "] IS ACTIVATED");
-											
-											chk = true;	
+											System.out.println("INVALID INPUT!! PLEASE TRY AGAIN!!");
 										}
 									}else {
 										System.out.println("INVALID INPUT!! PLEASE TRY AGAIN!!");
 									}
-								}else {
-									System.out.println("INVALID INPUT!! PLEASE TRY AGAIN!!");
 								}
 							}
 							break;
 						case 3: // APPROVE ONE BY ONE
-							for(Customer c : inactCstList) {
-								chk = false;
-								while(!chk) {
-									System.out.println();
-									c.display();
-									System.out.print("WOULD YOU LIKE TO ACTIVATE THIS ACCOUNT?(Y/N)");
-									yn = ynValidation(new Scanner(System.in));
-									if(yn.equalsIgnoreCase("Y")) {
-										as.setStatus(c, 'A', "Approved");
-										System.out.println("[ID:" + c.getId() + "] IS ACTIVATED");
-										AccountLauncher.e720Logger.info("ACCOUNT ID(" + c.getId() + ") IS ACTIVATED");
-										chk = true;
+							if(inactCstList.size() == 0) {
+								System.out.println("THERE IS NONE OF NEW ACCOUNT");
+							}else {
+								for(Customer c : inactCstList) {
+									chk = false;
+									while(!chk) {
+										System.out.println();
+										c.display();
+										System.out.print("WOULD YOU LIKE TO ACTIVATE THIS ACCOUNT?(Y/N)");
+										yn = ynValidation(new Scanner(System.in));
+										if(yn.equalsIgnoreCase("Y")) {
+											as.setStatus(c, 'A', "Approved");
+											System.out.println("[ID:" + c.getId() + "] IS ACTIVATED");
+											AccountLauncher.accountLogger.info("ACCOUNT ID(" + c.getId() + ") IS ACTIVATED");
+											chk = true;
+										}
+										else if (yn.equalsIgnoreCase("N")) {
+											as.setStatus(c, 'I', "Approved");
+											chk = true;
+										}
+										else continue;
 									}
-									else if (yn.equalsIgnoreCase("N")) {
-										as.setStatus(c, 'I', "Approved");
-										chk = true;
-									}
-									else continue;
 								}
 							}
 							break;
 						case 4: // REJECT ALL
+							if(inactCstList.size() == 0) {
+								System.out.println("THERE IS NONE OF NEW ACCOUNT");
+							}else {
+								for(Customer cst: inactCstList) {
+									//cst.setStatus('A');
+									as.setStatus(cst, 'I', "Approved");
+									System.out.println("[ID:" + cst.getId() + "] IS REJECTED");
+									AccountLauncher.accountLogger.info("ACCOUNT ID(" + cst.getId() + ") IS REJECTED");
+								}
+							}
+							break;
 						case 5:
 							break;
 						}
-						
 					break;
 				case 3: //TRANSACTION LOG
 					chk = false;

@@ -26,9 +26,13 @@ public class Account{
 //	}
 	
 	public void display() {
-		System.out.println("ACCOUNT [ ID: " + id + ", First Name: " + fName + ", Last Name: " + lName + " ]");		
+		System.out.println("ACCOUNT INFORMATION [ ID: " + id + ", First Name: " + fName + ", Last Name: " + lName + " ]");		
 	}
-
+	
+	public void display(boolean bool) {
+		System.out.println("ACCOUNT INFORMATION [ ID: " + id + ", First Name: " + fName + ", Last Name: " + lName + " ]");		
+	}
+	
 	public int getId() {
 		return id;
 	}

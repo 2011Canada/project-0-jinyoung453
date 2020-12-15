@@ -12,6 +12,6 @@ public class Employee extends Account{
 	
 	@Override
 	public void display() {
-		System.out.println("EMPLOYEE [ ID: " + super.getId() + ", First Name: " + super.getfName() + ", Last Name: " + super.getlName() +" ]"  ); 		
+		System.out.println("ACCOUNT INFORMATION [ ID: " + super.getId() + ", First Name: " + super.getfName() + ", Last Name: " + super.getlName() +" ]"  ); 		
 	}
 }

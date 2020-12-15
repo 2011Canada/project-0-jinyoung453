@@ -20,6 +20,8 @@ public interface AccountService {
 	
 	public String chkApprovalStatus(int id);
 	
+	public String chkAccType(int id);
+	
 	public void setStatus(Customer cs, char status, String approval);
 	//withdrawal
 	public void withdrawal(Customer cs, double amt);

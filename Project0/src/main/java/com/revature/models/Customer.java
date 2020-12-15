@@ -47,4 +47,16 @@ public class Customer extends Account {
 		if(this.status == 'A') stat = "Active"; 
 		System.out.println("CUSTOMER [ ID: " + super.getId() + ", First Name: " + super.getfName() + ", Last Name: " + super.getlName() + ", Balance: "+ this.balance +", Status: " + stat +", Approval: " + approval + " ]"  ); 		
 	}
+	
+
+	public void display(boolean bool) {
+		if(bool) { //Login
+			System.out.println("CUSTOMER [ ID: " + super.getId() + ", First Name: " + super.getfName() + ", Last Name: " + super.getlName() + ", Balance: "+ this.balance +" ]"  );	
+		}else {
+			String stat = "Inactive";
+			if(this.status == 'A') stat = "Active"; 
+			System.out.println("CUSTOMER [ ID: " + super.getId() + ", First Name: " + super.getfName() + ", Last Name: " + super.getlName() + ", Balance: "+ this.balance +", Status: " + stat +" ]"  );
+		}
+		 		
+	}
 }

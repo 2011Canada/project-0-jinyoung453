@@ -10,6 +10,6 @@ public class AccountNotFoundException extends Exception{
 		
 		super("That Account Was Not Found, Please Try Again");
 		//numberOfOccurances++;
-		AccountLauncher.e720Logger.debug("AccountNotFoundException()");
+		AccountLauncher.accountLogger.debug("AccountNotFoundException()");
 	}
 }

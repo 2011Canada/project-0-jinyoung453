@@ -12,14 +12,14 @@ import com.revature.services.AccountServiceImplementation;
 
 public class AccountLauncher {
 
-	public static Logger e720Logger = LogManager.getLogger("com.revature.e720");
+	public static Logger accountLogger = LogManager.getLogger("com.revature.account");
 	
 	public static void main(String[] args) {
 		AccountDAO aDao = new AccountImplementationPostgreDAO();
 		AccountService aService = new AccountServiceImplementation(aDao);
 		AccountMenu aMenu = new AccountMenu(aService);
 		
-		e720Logger.debug("SERVER HAS STARTED");
+		accountLogger.debug("SERVER HAS STARTED");
 		
 		aMenu.firstDisplay();
 		while(true) {

@@ -1,7 +1,6 @@
 package com.revature.repositories;
 
 import java.io.CharArrayReader;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.postgresql.jdbc.PgArray;
 
 import com.revature.launcher.AccountLauncher;
 import com.revature.models.Account;
@@ -60,7 +57,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 			
 		}catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("ACCOUNT CREATION IS FAILED");
+			AccountLauncher.accountLogger.debug("ACCOUNT CREATION IS FAILED");
 			e.printStackTrace();
 			try {
 				//System.out.println("Roll Back");
@@ -100,7 +97,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			updateAcc.executeUpdate();
 			
 		}catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("ACCOUNT UPDATE IS FAILED");
+			AccountLauncher.accountLogger.debug("ACCOUNT UPDATE IS FAILED");
 			e.printStackTrace();
 			try {
 				conn.rollback();
@@ -139,7 +136,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			
 			
 		}catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("ACCOUNT_STATUS UPDATE IS FAILED");
+			AccountLauncher.accountLogger.debug("ACCOUNT_STATUS UPDATE IS FAILED");
 			e.printStackTrace();
 			try {
 				conn.rollback();
@@ -178,7 +175,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 
 		} catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("ACCOUNT LISTS CANNOT BE CALLED");
+			AccountLauncher.accountLogger.debug("ACCOUNT LISTS CANNOT BE CALLED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
@@ -208,12 +205,12 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 
 		} catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("ACCOUNT_CUSTPMER LISTS CANNOT BE CALLED");
+			AccountLauncher.accountLogger.debug("ACCOUNT_CUSTPMER LISTS CANNOT BE CALLED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
 		}
-		//AccountLauncher.e720Logger.info(allCust);
+		//AccountLauncher.accountLogger.info(allCust);
 		return allCust;
 	}
 
@@ -238,12 +235,12 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 
 		} catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("ACCOUNT_ACTIVE_CUSTOMER LISTS CANNOT BE CALLED");
+			AccountLauncher.accountLogger.debug("ACCOUNT_ACTIVE_CUSTOMER LISTS CANNOT BE CALLED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
 		}
-		//AccountLauncher.e720Logger.info(cstInactList);
+		//AccountLauncher.accountLogger.info(cstInactList);
 		return cstInactList;
 	}
 
@@ -282,7 +279,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 			}
 			
 		} catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("FINDING ACCOUNT IS FAILED");
+			AccountLauncher.accountLogger.debug("FINDING ACCOUNT IS FAILED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
@@ -305,7 +302,7 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 				return status;
 			}
 		} catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
+			AccountLauncher.accountLogger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
@@ -327,11 +324,33 @@ public class AccountImplementationPostgreDAO implements AccountDAO {
 				return approval;
 			}
 		} catch (SQLException e) {
-			AccountLauncher.e720Logger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
+			AccountLauncher.accountLogger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
 			e.printStackTrace();
 		} finally {
 			cb.releaseConnection(conn);
 		}
 		return approval;
+	}
+	
+	public String findCustomerAccTypeById(int id) {
+		String acctype = "";
+		Connection conn = this.cb.getConnection();
+		
+		try {
+			String sql = "select acctype from project0.account "+
+						 "where main_id = " + id +" ;" ;
+			Statement s = conn.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			if(res.next()) {
+				acctype = res.getString("acctype");
+				return acctype;
+			}
+		} catch (SQLException e) {
+			AccountLauncher.accountLogger.debug("FINDING ACCOUNT_CUSTOMER IS FAILED");
+			e.printStackTrace();
+		} finally {
+			cb.releaseConnection(conn);
+		}
+		return acctype;
 	}
 }

@@ -35,22 +35,27 @@ public class AccountServiceImplementation implements AccountService {
 	public String chkApprovalStatus(int id) {
 		return ad.findCustomerApprovalById(id);
 	}
+	
+	public String chkAccType(int id) {
+		return ad.findCustomerAccTypeById(id);
+	}
+	
 
 	public void setStatus(Customer cs, char status, String approval) {
 		ad.updateCustStatus(cs, status, approval);
-		AccountLauncher.e720Logger.info("ACCOUNT ID(" + cs.getId() + ") IS ACTIVATED");
+		AccountLauncher.accountLogger.info("ACCOUNT ID(" + cs.getId() + ") IS ACTIVATED");
 	}
 
 	public void withdrawal(Customer cst, double amount) {
 			ad.updateAccount(cst, cst.getBalance() - amount);
 			cst.setBalance(cst.getBalance() - amount);
-			AccountLauncher.e720Logger.info(cst.getfName() + " " + cst.getlName() + " HAS WITHDRAWN: $" + amount);
+			AccountLauncher.accountLogger.info(cst.getfName() + " " + cst.getlName() + " HAS WITHDRAWN: $" + amount);
 	}
 
 	public void deposit(Customer cst, double amount) {
 		ad.updateAccount(cst, cst.getBalance() + amount);
 		cst.setBalance(cst.getBalance() + amount);
-		AccountLauncher.e720Logger.info(cst.getfName() + " " + cst.getlName() + " HAS DEPOSITED: $" + amount);
+		AccountLauncher.accountLogger.info(cst.getfName() + " " + cst.getlName() + " HAS DEPOSITED: $" + amount);
 	}
 
 	public List<Customer> showAllCustomers() {

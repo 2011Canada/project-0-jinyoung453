@@ -20,4 +20,5 @@ public interface AccountDAO {
 	public Account findAccountById(int id, char type, String approval);
 	public char findCustomerStatusById(int id);
 	public String findCustomerApprovalById(int id);
+	public String findCustomerAccTypeById(int id);
 }
