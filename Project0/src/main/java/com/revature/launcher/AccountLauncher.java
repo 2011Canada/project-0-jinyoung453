@@ -20,7 +20,9 @@ public class AccountLauncher {
 		AccountMenu aMenu = new AccountMenu(aService);
 		
 		accountLogger.debug("SERVER HAS STARTED");
-		
+		System.out.println("**************************");
+		System.out.println("***      JK SYSTEM     ***");
+		System.out.println("**************************\n");
 		aMenu.firstDisplay();
 		while(true) {
 

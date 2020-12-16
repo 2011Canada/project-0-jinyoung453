@@ -100,14 +100,14 @@ public class AccountMenu{
 		str += "==========================\n";
 		return str;
 	}
-	
+
 	public String menuAfterLogin() {
 		
 		String str = "\n==========================\n";
 		if(!isEmployee) {
 			str +=  "    1: BALANCE\n" +
 					"    2: DEPOSIT\n" +
-					"    3: WIDTHRAWAL\n" +
+					"    3: WITHDRAWAL\n" +
 					"    4: TRANSFER\n" +
 					"    5: LOGOUT\n";
 		}else {
@@ -174,6 +174,9 @@ public class AccountMenu{
 					System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
 					return false;
 				
+				}else if(as.chkApprovalStatus(id).equals("") || as.chkApprovalStatus(id) == null){
+					System.out.println("[WARNING] ACCOUNT DOES NOT EXIST. PLEASE TRY AGAIN!!");
+					return false;
 				}else {
 					//System.out.println("as.chkActivationStatus(id): "+ as.chkActivationStatus(id));
 					System.out.println("[WARNING] THE ACCOUNT IS NOT ACTIVATED");
@@ -260,6 +263,7 @@ public class AccountMenu{
 					char[] pwArr = null;
 					while(!registerChk) {
 						chk = false;
+						
 						System.out.print("\nFIRST NAME: ");
 						fName = userInput.next();
 						
@@ -272,7 +276,7 @@ public class AccountMenu{
 						pwArr = password.toCharArray();
 						
 						while(!chk) {
-							System.out.print("DEPOSIT AMOUNT: ");
+							System.out.print("DEPOSIT AMOUNT: $");
 							if(amountValidation(new Scanner(System.in))) {
 								chk = true;
 							}else {
@@ -282,7 +286,7 @@ public class AccountMenu{
 						chk =false;
 						while(!chk) {
 							System.out.println("\nIS YOUR INFORMATION CORRECT??(Y/N)");
-							System.out.println("NAME: " + fName + " " + lName + ", PASSWORD: " + password + ", DEPOSIT AMOUNT: " + amount);
+							System.out.println("NAME: " + fName + " " + lName + ", PASSWORD: " + password + ", DEPOSIT AMOUNT: $" + amount);
 							yn = ynValidation(new Scanner(System.in));
 							if(!yn.equals("")) {
 								if(yn.equalsIgnoreCase("Y")) {
@@ -300,7 +304,7 @@ public class AccountMenu{
 					cstList = as.showAllCustomers();
 					Account newAccount = new Customer(cstList.get(cstList.size()-1).getId()+1, pwArr, fName, lName, amount, 'I', "New");
 					as.create(newAccount);
-					AccountLauncher.accountLogger.info("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:" + amount);
+					AccountLauncher.accountLogger.info("NEW ACCOUNT CREATED" + "[ACCOUNT ID:" + newAccount.getId() + ", NAME:" + newAccount.getfName() + " " + newAccount.getlName() + ", DEPOSIT:$" + amount +"]");
 					
 					System.out.println("\nYOUR NEW ACCOUNT IS CREATED");
 					newAccount.display(false);
@@ -337,7 +341,7 @@ public class AccountMenu{
 						}
 					}
 					if(chk) {
-						AccountLauncher.accountLogger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
+						AccountLauncher.accountLogger.debug(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
 						chk = false;
 					}
 					myAccount.display(true);
@@ -384,7 +388,7 @@ public class AccountMenu{
 						}
 					}
 					if(chk) {
-						AccountLauncher.accountLogger.info(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
+						AccountLauncher.accountLogger.debug(myAccount.getfName() + " " + myAccount.getlName() + " HAS LOGGED IN");
 						chk = false;
 					}
 					myAccount.display();
@@ -408,39 +412,39 @@ public class AccountMenu{
 				switch(num) {
 				case 1:
 					//info(cstAcc);
-					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
+					System.out.println("YOUR BALANCE: $" + cstAcc.getBalance());
 					break;
 				case 2:
 					chk = false;
 					while(!chk) {
-						System.out.print("\nENTER DEPOSIT AMOUNT: ");
+						System.out.print("\nENTER DEPOSIT AMOUNT: $");
 						if(amountValidation(new Scanner(System.in))) {
 							as.deposit(cstAcc, amount);
-							System.out.println(amount + " DOLLARS ARE SUCCESSFULLY DEPOSITED");
+							System.out.println("$"+amount + " ARE SUCCESSFULLY DEPOSITED");
 							chk = true;
 							amount = 0;	
 						}
 					}
 					//info(cstAcc);
-					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
+					System.out.println("YOUR BALANCE: $" + cstAcc.getBalance());
 					break;
 				case 3:
 					chk = false;
 					while(!chk) {
-						System.out.print("\nENTER WITHDRAWAL AMOUNT: ");
+						System.out.print("\nENTER WITHDRAWAL AMOUNT: $");
 						if(amountValidation(new Scanner(System.in))) {
 							if(amount > cstAcc.getBalance()) {
 								System.out.println("PLEASE CHECK YOUR BALANCE");
 							}else {
 								as.withdrawal(cstAcc, amount);
-								System.out.println(amount + " DOLLARS ARE SUCCESSFULLY WITHDRAWN");
+								System.out.println("$"+amount + " ARE SUCCESSFULLY WITHDRAWN");
 								chk = true;
 								amount = 0;
 							}
 						}
 					}
 					//info(cstAcc);
-					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
+					System.out.println("YOUR BALANCE: $" + cstAcc.getBalance());
 					break;
 				case 4:
 					boolean amountChk = false;
@@ -448,7 +452,7 @@ public class AccountMenu{
 					Customer transCust = null;
 					while(!accountChk) {
 						System.out.println("\n(0: GO BACK TO MENU)");
-						System.out.print("ENTER ACCOUNT NUMBER TO TRANSFER: ");
+						System.out.print("ENTER ACCOUNT NUMBER TO TRANSFER: $");
 						
 						if(idValidation(new Scanner(System.in),'C')) {
 							if(cstAcc.getId() == id) {
@@ -462,7 +466,7 @@ public class AccountMenu{
 						break;
 					}
 					while(!amountChk) {
-						System.out.print("\nENTER AMOUNT TO TRANSFER: ");
+						System.out.print("ENTER AMOUNT TO TRANSFER: $");
 						if(amountValidation(new Scanner(System.in))) {
 							transCust = (Customer)as.findAccount(id, 'C', "Approved");
 							if(amount > cstAcc.getBalance()) {
@@ -470,14 +474,14 @@ public class AccountMenu{
 							}else {
 								as.withdrawal(cstAcc, amount);
 								as.deposit(transCust, amount);
-								System.out.println(amount + " DOLLARS SUCCESSFULLY TRANSFERED TO " + transCust.getId());
+								System.out.println("$"+ amount + " SUCCESSFULLY TRANSFERED TO " + transCust.getId());
 								amount = 0;		
 								id = -1;
 								amountChk = true;
 							}
 						}
 					}
-					System.out.println("YOUR BALANCE: " + cstAcc.getBalance());
+					System.out.println("YOUR BALANCE: $" + cstAcc.getBalance());
 					//info(cstAcc);
 					//LINE TO REMOVE
 					//info(transCust);
