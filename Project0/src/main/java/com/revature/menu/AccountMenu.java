@@ -452,7 +452,7 @@ public class AccountMenu{
 					Customer transCust = null;
 					while(!accountChk) {
 						System.out.println("\n(0: GO BACK TO MENU)");
-						System.out.print("ENTER ACCOUNT NUMBER TO TRANSFER: $");
+						System.out.print("ENTER ACCOUNT NUMBER TO TRANSFER: ");
 						
 						if(idValidation(new Scanner(System.in),'C')) {
 							if(cstAcc.getId() == id) {
